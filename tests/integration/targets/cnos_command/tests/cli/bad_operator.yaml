@@ -9,11 +9,11 @@
     wait_for:
       - result[0] contains 'Description: Foo'
   register: result
-  ignore_errors: yes
+  ignore_errors: true
 
 - assert:
     that:
-      - "result.failed == true"
-      - "result.msg is defined"
+      - result.failed == true
+      - result.msg is defined
 
 - debug: msg="END cli/bad_operator.yaml"

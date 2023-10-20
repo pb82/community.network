@@ -3,14 +3,14 @@
   cnos_vrf:
     name: "{{ item }}"
     state: absent
-  become: yes
+  become: true
   with_items:
-  - test
-  - test1
-  - test2
-  - test3
-  - test4
-  - test5
+    - test
+    - test1
+    - test2
+    - test3
+    - test4
+    - test5
 
 - name: Setup - Ensure interfaces are not switchport
   cnos_config:
@@ -19,19 +19,19 @@
       - no switchport
       - no logging monitor
     parents:
-      - "interface ethernet1/33"
+      - interface ethernet1/33
 
 - name: Create vrf
   cnos_vrf:
     name: test
     rd: 1:200
     state: present
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
       - "'vrf context test' in result.commands"
       - "'rd 1:200' in result.commands"
 
@@ -40,25 +40,25 @@
     name: test
     rd: 1:200
     state: present
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.commands | length == 0"
+      - result.changed == false
+      - result.commands | length == 0
 
 - name: Modify rd
   cnos_vrf:
     name: test
     rd: 1:201
     state: present
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
       - "'vrf context test' in result.commands"
       - "'rd 1:201' in result.commands"
 
@@ -67,13 +67,13 @@
     name: test
     rd: 1:201
     state: present
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.commands | length == 0"
+      - result.changed == false
+      - result.commands | length == 0
 
 - name: Add Ethernet1/33 to vrf and check interface assigned state
   cnos_vrf:
@@ -84,12 +84,12 @@
       - Ethernet1/33
     associated_interfaces:
       - Ethernet1/33
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
       - "'interface ethernet1/33' in result.commands"
       - "'vrf member test' in result.commands"
 
@@ -99,14 +99,14 @@
     rd: 1:201
     state: present
     interfaces:
-      - ethernet 1/33  # interface name modified to test case insensitive and space scenario
-  become: yes
+      - ethernet 1/33 # interface name modified to test case insensitive and space scenario
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.commands | length == 0"
+      - result.changed == false
+      - result.commands | length == 0
 
 - name: Add multiple interfaces to vrf
   cnos_vrf:
@@ -120,12 +120,12 @@
       - loopback 4
       - loopback 5
       - loopback 6
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
       - "'interface loopback1' in result.commands"
       - "'vrf member test1' in result.commands"
       - "'interface loopback2' in result.commands"
@@ -151,35 +151,35 @@
       - loopback 4
       - loopback 5
       - loopback 6
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.commands | length == 0"
+      - result.changed == false
+      - result.commands | length == 0
 
 - name: setup - remove vrf
   cnos_vrf:
     name: "{{ item }}"
     state: absent
-  become: yes
+  become: true
   with_items:
-  - test1
-  - test2
-  - test3
+    - test1
+    - test2
+    - test3
 
 - name: Create aggregate of VRFs
   cnos_vrf:
     aggregate:
-      - { name: test2, rd: "1:202" }
-      - { name: test3, rd: "1:203" }
+      - { name: test2, rd: 1:202 }
+      - { name: test3, rd: 1:203 }
     state: present
   register: result
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
       - "'vrf context test2' in result.commands"
       - "'rd 1:202' in result.commands"
       - "'vrf context test3' in result.commands"
@@ -188,30 +188,30 @@
 - name: Create aggregate of VRFs again (idempotent)
   cnos_vrf:
     aggregate:
-      - { name: test2, rd: "1:202" }
-      - { name: test3, rd: "1:203" }
+      - { name: test2, rd: 1:202 }
+      - { name: test3, rd: 1:203 }
     state: present
-  become: yes
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.commands | length == 0"
+      - result.changed == false
+      - result.commands | length == 0
 
 - name: Create aggregate of VRFs with purge
   cnos_vrf:
     aggregate:
-      - { name: test4, rd: "1:204" }
-      - { name: test5, rd: "1:205" }
+      - { name: test4, rd: 1:204 }
+      - { name: test5, rd: 1:205 }
     state: present
-    purge: yes
-  become: yes
+    purge: true
+  become: true
   register: result
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
       - "'vrf context test4' in result.commands"
       - "'rd 1:204' in result.commands"
       - "'vrf context test5' in result.commands"
@@ -224,13 +224,13 @@
   cnos_vrf:
     name: test
     state: absent
-  become: yes
+  become: true
 
 - name: Delete VRFs again (idempotent)
   cnos_vrf:
     name: test
     state: absent
-  become: yes
+  become: true
 
 - name: Delete aggregate of VRFs
   cnos_vrf:
@@ -241,7 +241,7 @@
       - { name: test4 }
       - { name: test5 }
     state: absent
-  become: yes
+  become: true
 
 - name: Delete VRFs again (idempotent)
   cnos_vrf:
@@ -252,8 +252,8 @@
       - { name: test4 }
       - { name: test5 }
     state: absent
-  become: yes
+  become: true
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true

@@ -3,13 +3,13 @@
 
 - name: get output for single command
   cnos_command:
-    commands: ['display version']
+    commands: [display version]
   register: result
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.stdout is defined"
+      - result.changed == false
+      - result.stdout is defined
 
 - name: get output for multiple commands
   cnos_command:
@@ -20,8 +20,8 @@
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.stdout is defined"
-      - "result.stdout | length == 2"
+      - result.changed == false
+      - result.stdout is defined
+      - result.stdout | length == 2
 
 - debug: msg="END cli/output.yaml"

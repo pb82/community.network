@@ -6,13 +6,13 @@
     commands:
       - display version
     wait_for:
-      - "result[0] contains bad_value_string"
+      - result[0] contains bad_value_string
   register: result
-  ignore_errors: yes
+  ignore_errors: true
 
 - assert:
     that:
-      - "result.failed == true"
-      - "result.msg is defined"
+      - result.failed == true
+      - result.msg is defined
 
 - debug: msg="END cli/timeout.yaml"

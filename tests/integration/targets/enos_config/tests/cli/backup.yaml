@@ -6,7 +6,7 @@
     commands:
       - no vlan 13
     provider: "{{ cli }}"
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: collect any backup files
   find:
@@ -24,14 +24,14 @@
 - name: configure device with config
   enos_config:
     src: roles/enos_config/templates/basic/config.j2
-    backup: yes
+    backup: true
     provider: "{{ cli }}"
   register: result
 
 - assert:
     that:
-      - "result.changed == false"
- 
+      - result.changed == false
+
 - name: collect any backup files
   find:
     paths: "{{ role_path }}/backup"
@@ -41,7 +41,7 @@
 
 - assert:
     that:
-      - "backup_files.files is defined"
+      - backup_files.files is defined
 
 - name: teardown
   enos_config:

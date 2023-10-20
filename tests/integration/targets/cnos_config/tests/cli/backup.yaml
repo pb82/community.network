@@ -5,7 +5,7 @@
   cnos_config:
     commands:
       - no vlan 13
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: collect any backup files
   find:
@@ -23,13 +23,13 @@
 - name: configure device with config
   cnos_config:
     src: roles/cnos_config/templates/basic/config.j2
-    backup: yes
+    backup: true
   register: result
 
 - assert:
     that:
-      - "result.changed == true"
- 
+      - result.changed == true
+
 - name: collect any backup files
   find:
     paths: "{{ role_path }}/backup"
@@ -39,7 +39,7 @@
 
 - assert:
     that:
-      - "backup_files.files is defined"
+      - backup_files.files is defined
 
 - name: teardown
   cnos_config:

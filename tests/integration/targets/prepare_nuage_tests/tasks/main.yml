@@ -1,3 +1,4 @@
+---
 ####################################################################
 # WARNING: These are designed specifically for Ansible tests       #
 # and should not be used as examples of how to write Ansible roles #
@@ -5,21 +6,21 @@
 
 - block:
     - name: Install Nuage VSD API Simulator
-      pip:
+      ansible.builtin.pip:
         name: nuage-vsd-sim
 
     - name: Start Nuage VSD API Simulator
-      shell: "(cd /; nuage-vsd-sim >/dev/null 2>&1)"
+      ansible.builtin.shell: (cd /; nuage-vsd-sim >/dev/null 2>&1)
       changed_when: false
       async: 1800
       poll: 0
 
     - name: Wait for API to be ready
-      uri:
+      ansible.builtin.uri:
         url: http://localhost:5000
       register: api
       delay: 3
       retries: 10
       until: api.status == 200
 
-  when: "ansible_python_version is version('2.7', '>=')"
+  when: ansible_python_version is version('2.7', '>=')

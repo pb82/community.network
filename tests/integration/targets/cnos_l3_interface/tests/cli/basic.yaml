@@ -22,7 +22,7 @@
       - no switchport
       - no logging monitor
     parents:
-      - "interface {{ item }}"
+      - interface {{ item }}
     provider: "{{ cli }}"
   loop:
     - "{{ test_interface }}"
@@ -38,7 +38,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"ip address 10.241.113.1 255.255.255.0" in result.commands'
 
@@ -50,9 +50,9 @@
     provider: "{{ cli }}"
   register: result
 
-- assert: &unchanged
+- assert:
     that:
-      - 'result.changed == false'
+      - result.changed == false
 
 - name: Assign same ipv4 address to other interface (fail)
   cnos_l3_interface:
@@ -60,13 +60,13 @@
     ipv4: 10.241.113.1/24
     state: present
     provider: "{{ cli }}"
-  ignore_errors: yes
+  ignore_errors: true
   register: result
 
 - assert:
     that:
-      - "result.failed == true"
-      - "result.msg is defined"
+      - result.failed == true
+      - result.msg is defined
 
 - name: Change interface ipv4 address
   cnos_l3_interface:
@@ -78,7 +78,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"ip address dhcp" in result.commands'
 
@@ -92,7 +92,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"ipv6 address fd5d:12c9:2201:1::1/64" in result.commands'
 
@@ -102,7 +102,7 @@
 
 - assert:
     that:
-      - 'result.changed == false'
+      - result.changed == false
 
 - name: Configure second ipv6 address on interface
   cnos_l3_interface: &ipv6-2
@@ -114,7 +114,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"ipv6 address fd5d:12c9:2291:1::1/64" in result.commands'
 
@@ -124,7 +124,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
 
 - name: Ensure second ipv6 address still associated with interface
   cnos_l3_interface: *ipv6-2
@@ -132,7 +132,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
 
 - name: Assign same ipv6 address to other interface (fail)
   cnos_l3_interface:
@@ -140,12 +140,12 @@
     ipv6: fd5d:12c9:2201:1::1/64
     state: present
     provider: "{{ cli }}"
-  ignore_errors: yes
+  ignore_errors: true
   register: result
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface2 }}" in result.commands'
       - '"ipv6 address fd5d:12c9:2201:1::1/64" in result.commands'
 
@@ -159,7 +159,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"ipv6 address dhcp" in result.commands'
 
@@ -172,7 +172,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"no ip address" in result.commands'
       - '"no ipv6 address" in result.commands'
@@ -186,7 +186,7 @@
 
 - assert:
     that:
-      - 'result.changed == false'
+      - result.changed == false
 
 - name: Delete second interface ipv4 and ipv6 address (setup)
   cnos_l3_interface:
@@ -198,14 +198,14 @@
 - name: Configure ipv4 and ipv6 address using aggregate
   cnos_l3_interface:
     aggregate:
-    - { name: "{{ test_interface }}", ipv4: 10.241.113.1/24, ipv6: "fd5d:12c9:2201:2::2/64" }
-    - { name: "{{ test_interface2 }}", ipv4: 10.141.233.2/16, ipv6: "fd5e:12c9:2201:3::3/32" }
+      - { name: "{{ test_interface }}", ipv4: 10.241.113.1/24, ipv6: fd5d:12c9:2201:2::2/64 }
+      - { name: "{{ test_interface2 }}", ipv4: 10.141.233.2/16, ipv6: fd5e:12c9:2201:3::3/32 }
     provider: "{{ cli }}"
   register: result
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"ip address 10.241.113.1 255.255.255.0" in result.commands'
       - '"ipv6 address fd5d:12c9:2201:2::2/64" in result.commands'
@@ -213,29 +213,29 @@
       - '"ip address 10.141.233.2 255.255.0.0" in result.commands'
       - '"ipv6 address fd5e:12c9:2201:3::3/32" in result.commands'
 
-- name:  Configure ipv4 and ipv6 address using aggregate (idempotent)
+- name: Configure ipv4 and ipv6 address using aggregate (idempotent)
   cnos_l3_interface:
     aggregate:
-    - { name: "{{ test_interface }}", ipv4: 10.241.113.1/24, ipv6: "fd5d:12c9:2201:2::2/64" }
-    - { name: "{{ test_interface2 }}", ipv4: 10.141.233.2/16, ipv6: "fd5e:12c9:2201:3::3/32" }
+      - { name: "{{ test_interface }}", ipv4: 10.241.113.1/24, ipv6: fd5d:12c9:2201:2::2/64 }
+      - { name: "{{ test_interface2 }}", ipv4: 10.141.233.2/16, ipv6: fd5e:12c9:2201:3::3/32 }
     provider: "{{ cli }}"
   register: result
 
 - assert:
     that:
-      - 'result.changed == false'
+      - result.changed == false
 
-- name:  Change ipv4 and ipv6 address using aggregate
+- name: Change ipv4 and ipv6 address using aggregate
   cnos_l3_interface:
     aggregate:
-    - { name: "{{ test_interface }}", ipv4: 10.241.113.1/16, ipv6: "fd5a:12c9:2201:4::4/32" }
-    - { name: "{{ test_interface2 }}", ipv4: 10.141.233.2/24, ipv6: "fd5b:12c9:2201:5::5/90" }
+      - { name: "{{ test_interface }}", ipv4: 10.241.113.1/16, ipv6: fd5a:12c9:2201:4::4/32 }
+      - { name: "{{ test_interface2 }}", ipv4: 10.141.233.2/24, ipv6: fd5b:12c9:2201:5::5/90 }
     provider: "{{ cli }}"
   register: result
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"ip address 10.241.113.1 255.255.0.0" in result.commands'
       - '"ipv6 address fd5a:12c9:2201:4::4/32" in result.commands'
@@ -243,19 +243,18 @@
       - '"ip address 10.141.233.2 255.255.255.0" in result.commands'
       - '"ipv6 address fd5b:12c9:2201:5::5/90" in result.commands'
 
-
-- name:  Delete ipv4 and ipv6 address using aggregate
+- name: Delete ipv4 and ipv6 address using aggregate
   cnos_l3_interface:
     aggregate:
-    - { name: "{{ test_interface }}" }
-    - { name: "{{ test_interface2 }}" }
+      - { name: "{{ test_interface }}" }
+      - { name: "{{ test_interface2 }}" }
     state: absent
     provider: "{{ cli }}"
   register: result
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"interface {{ test_interface }}" in result.commands'
       - '"no ip address" in result.commands'
       - '"no ipv6 address" in result.commands'
@@ -263,17 +262,17 @@
       - '"no ip address" in result.commands'
       - '"no ipv6 address" in result.commands'
 
-- name:  Delete ipv4 and ipv6 address using aggregate (idempotent)
+- name: Delete ipv4 and ipv6 address using aggregate (idempotent)
   cnos_l3_interface:
     aggregate:
-    - { name: "{{ test_interface }}" }
-    - { name: "{{ test_interface2 }}" }
+      - { name: "{{ test_interface }}" }
+      - { name: "{{ test_interface2 }}" }
     state: absent
     provider: "{{ cli }}"
   register: result
 
 - assert:
     that:
-      - 'result.changed == false'
+      - result.changed == false
 
 - debug: msg="END cnos_l3_interface cli/basic.yaml on connection={{ ansible_connection }}"

@@ -1,11 +1,9 @@
 ---
-
 - name: setup - remove motd
   cnos_banner:
     banner: motd
     state: absent
     provider: "{{ cli }}"
-
 
 - name: Set motd
   cnos_banner:
@@ -24,7 +22,7 @@
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
 #      - "'banner motd @\nthis is my motd banner\nthat has a multiline\nstring\n@' in result.commands"
 
 - name: Set motd again (idempotent)
@@ -41,5 +39,5 @@
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.commands | length == 0"
+      - result.changed == false
+      - result.commands | length == 0

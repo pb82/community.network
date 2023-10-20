@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START exos_vlans overridden integration tests on connection={{ ansible_connection }}"
+    msg: START exos_vlans overridden integration tests on connection={{ ansible_connection }}
 
 - include_tasks: _reset_config.yaml
 
@@ -38,7 +38,7 @@
     - name: Assert that task was idempotent
       assert:
         that:
-          - "result.changed == false"
+          - result.changed == false
 
     - name: Assert that before dicts were correctly generated
       assert:

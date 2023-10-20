@@ -8,7 +8,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"lldp receive" in result.commands'
       - '"lldp transmit" in result.commands'
 
@@ -19,7 +19,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
 
 - name: Disable LLDP service
   cnos_lldp:
@@ -28,9 +28,9 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"no lldp receive" in result.commands'
-      - '"no lldp transmit" in result.commands' 
+      - '"no lldp transmit" in result.commands'
 
 - name: Disable LLDP service (idempotent)
   cnos_lldp:
@@ -39,6 +39,6 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
 
 - debug: msg="END cnos_lldp cli/basic.yaml on connection={{ ansible_connection }}"

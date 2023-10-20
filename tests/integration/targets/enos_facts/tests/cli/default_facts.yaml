@@ -8,7 +8,7 @@
 - assert:
     that:
       # _facts modules should never report a change
-      - "result.changed == false"
+      - result.changed == false
 
       # Correct subsets are present
       - "'hardware' in result.ansible_facts.ansible_net_gather_subset"
@@ -20,10 +20,10 @@
 
       # Items from those subsets are present
       #- "result.ansible_facts.ansible_net_filesystems is defined" #hw
-      - "result.ansible_facts.ansible_net_memtotal_mb > 10" #hw
-      - "result.ansible_facts.ansible_net_interfaces | length > 1" # more than one interface returned
+      - result.ansible_facts.ansible_net_memtotal_mb > 10 #hw
+      - result.ansible_facts.ansible_net_interfaces | length > 1 # more than one interface returned
 
       # ... and not present
-      - "result.ansible_facts.ansible_net_config is not defined" # config
+      - result.ansible_facts.ansible_net_config is not defined # config
 
 - debug: msg="END cli/default.yaml"

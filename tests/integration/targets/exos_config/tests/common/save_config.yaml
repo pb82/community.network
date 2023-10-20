@@ -12,7 +12,7 @@
   register: result
 - assert:
     that:
-      - "result.changed == True"
+      - result.changed == True
 
 - name: Get the config file
   exos_command:
@@ -24,12 +24,12 @@
 
 - name: Check if the primary config file has the changes
   exos_command:
-    commands: "debug cfgmgr show configuration file {{ config_selected.0 }}"  
+    commands: debug cfgmgr show configuration file {{ config_selected.0 }}
   register: result
 
 - assert:
-    that: 
-      - "result.stdout[0] is search('configure vlan VLAN_0200 tag 200')"
+    that:
+      - result.stdout[0] is search('configure vlan VLAN_0200 tag 200')
 
 - name: Idempotent save configuration
   exos_config:
@@ -38,7 +38,7 @@
 
 - assert:
     that:
-      - "result.changed == False"
+      - result.changed == False
 
 - name: Restore initial state by deleting vlan
   exos_config:

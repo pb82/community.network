@@ -11,7 +11,8 @@ merged:
 
   requests:
     # 'suppress-tlv-advertisement' list is sorted to compare test
-    - data: '{"openconfig-lldp:config": {"suppress-tlv-advertisement": ["MANAGEMENT_ADDRESS", "PORT_DESCRIPTION", "SYSTEM_CAPABILITIES", "SYSTEM_DESCRIPTION"], "hello-timer": 10}}'
+    - data: '{"openconfig-lldp:config": {"suppress-tlv-advertisement": ["MANAGEMENT_ADDRESS", "PORT_DESCRIPTION", "SYSTEM_CAPABILITIES", "SYSTEM_DESCRIPTION"], "hello-timer":
+        10}}'
       method: PUT
       path: /rest/restconf/data/openconfig-lldp:lldp/config
 
@@ -36,7 +37,8 @@ populate:
 replaced:
   requests:
     # 'suppress-tlv-advertisement' list is sorted to compare test
-    - data: '{"openconfig-lldp:config": {"suppress-tlv-advertisement": ["MANAGEMENT_ADDRESS", "PORT_DESCRIPTION", "SYSTEM_CAPABILITIES", "SYSTEM_NAME"], "hello-timer": 20}}'
+    - data: '{"openconfig-lldp:config": {"suppress-tlv-advertisement": ["MANAGEMENT_ADDRESS", "PORT_DESCRIPTION", "SYSTEM_CAPABILITIES", "SYSTEM_NAME"], "hello-timer":
+        20}}'
       method: PUT
       path: /rest/restconf/data/openconfig-lldp:lldp/config
 
@@ -64,7 +66,6 @@ deleted:
     - data: '{"openconfig-lldp:config": {"suppress-tlv-advertisement": ["MANAGEMENT_ADDRESS", "PORT_DESCRIPTION", "SYSTEM_CAPABILITIES"], "hello-timer": 30}}'
       method: PUT
       path: /rest/restconf/data/openconfig-lldp:lldp/config
-
 
   after:
     interval: 30
