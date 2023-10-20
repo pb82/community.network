@@ -4,4 +4,4 @@
 # and should not be used as examples of how to write Ansible roles #
 ####################################################################
 
-- { include: httpapi.yaml, tags: ['httpapi'] }
+- { ansible.builtin._include: httpapi.yaml, tags: [httpapi] }

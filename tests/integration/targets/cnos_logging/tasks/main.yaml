@@ -4,4 +4,4 @@
 # and should not be used as examples of how to write Ansible roles #
 ####################################################################
 
-- { include: cli.yaml, tags: ['cli'] }
+- { ansible.builtin._include: cli.yaml, tags: [cli] }

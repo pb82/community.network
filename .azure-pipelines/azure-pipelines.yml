@@ -1,3 +1,4 @@
+---
 trigger:
   batch: true
   branches:
@@ -13,14 +14,14 @@ pr:
       - stable-*
 
 schedules:
-  - cron: 0 8 * * *
+  - cron: "0 8 * * *"
     displayName: "Nightly (branch: main)"
     always: true
     branches:
       include:
         - main
-  - cron: 0 10 * * *
-    displayName: "Nightly (active stable branches)"
+  - cron: "0 10 * * *"
+    displayName: Nightly (active stable branches)
     always: true
     branches:
       include:
@@ -47,7 +48,7 @@ resources:
 pool: Standard
 
 stages:
-### Sanity
+  ### Sanity
   - stage: Sanity_devel
     displayName: Sanity devel
     dependsOn: []
@@ -126,7 +127,7 @@ stages:
             - test: 4
             - test: 5
 
-### Units
+  ### Units
   - stage: Units_devel
     displayName: Units devel
     dependsOn: []
@@ -136,7 +137,7 @@ stages:
           nameFormat: Python {0}
           testFormat: devel/units/{0}/1
           targets:
-            - test: '3.10'
+            - test: "3.10"
 
   - stage: Units_2_16
     displayName: Units 2.16
@@ -147,7 +148,7 @@ stages:
           nameFormat: Python {0}
           testFormat: 2.16/units/{0}/1
           targets:
-            - test: '3.10'
+            - test: "3.10"
 
   - stage: Units_2_15
     displayName: Units 2.15
@@ -158,7 +159,7 @@ stages:
           nameFormat: Python {0}
           testFormat: 2.15/units/{0}/1
           targets:
-            - test: '3.10'
+            - test: "3.10"
 
   - stage: Units_2_14
     displayName: Units 2.14
@@ -169,7 +170,7 @@ stages:
           nameFormat: Python {0}
           testFormat: 2.14/units/{0}/1
           targets:
-            - test: '3.10'
+            - test: "3.10"
 
   - stage: Units_2_13
     displayName: Units 2.13
@@ -181,9 +182,9 @@ stages:
           testFormat: 2.13/units/{0}/1
           targets:
             - test: 3.8
-            - test: '3.10'
+            - test: "3.10"
 
-### Cloud
+  ### Cloud
   - stage: Cloud_devel
     displayName: Cloud devel
     dependsOn: []
@@ -248,7 +249,7 @@ stages:
             - test: 3.9
             - test: "3.10"
 
-### Finally
+  ### Finally
   - stage: Summary
     condition: succeededOrFailed()
     dependsOn:

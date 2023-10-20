@@ -6,7 +6,7 @@
     commands:
       - no vlan 13\n
     provider: "{{ cli }}"
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: configure device with config
   enos_config:
@@ -17,8 +17,8 @@
 
 - assert:
     that:
-      - "result.changed == true"
-      - "result.updates is defined"
+      - result.changed == true
+      - result.updates is defined
 
 - name: check device with config
   enos_config:
@@ -29,8 +29,8 @@
 
 - assert:
     that:
-      - "result.changed == true"
-      - "result.updates is defined"
+      - result.changed == true
+      - result.updates is defined
 
 - name: teardown
   enos_config:

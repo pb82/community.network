@@ -1,18 +1,18 @@
 ---
 initial_state:
-  - name: "Default"
-    state: "active"
+  - name: Default
+    state: active
     vlan_id: 1
-  - name: "vlan_10"
-    state: "active"
+  - name: vlan_10
+    state: active
     vlan_id: 10
-  - name: "vlan_20"
-    state: "suspend"
+  - name: vlan_20
+    state: suspend
     vlan_id: 20
 
 merged:
   requests:
-    - data: '{"openconfig-vlan:vlans": [{"config": {"status": "ACTIVE", "vlan-id": 30, "name": "vlan_30", "tpid": "oc-vlan-types:TPID_0x8100"}}]}' 
+    - data: '{"openconfig-vlan:vlans": [{"config": {"status": "ACTIVE", "vlan-id": 30, "name": "vlan_30", "tpid": "oc-vlan-types:TPID_0x8100"}}]}'
       method: POST
       path: /rest/restconf/data/openconfig-vlan:vlans/
     - data: '{"openconfig-vlan:vlans": {"vlan": [{"config": {"status": "SUSPENDED", "vlan-id": 10, "name": "vlan_10", "tpid": "oc-vlan-types:TPID_0x8100"}}]}}'
@@ -20,17 +20,17 @@ merged:
       path: /rest/restconf/data/openconfig-vlan:vlans/
 
   after:
-    - name: "Default"
-      state: "active"
+    - name: Default
+      state: active
       vlan_id: 1
-    - name: "vlan_10"
-      state: "suspend"
+    - name: vlan_10
+      state: suspend
       vlan_id: 10
-    - name: "vlan_20"
-      state: "suspend"
+    - name: vlan_20
+      state: suspend
       vlan_id: 20
-    - name: "vlan_30"
-      state: "active"
+    - name: vlan_30
+      state: active
       vlan_id: 30
 
 replaced:
@@ -43,22 +43,22 @@ replaced:
       path: /rest/restconf/data/openconfig-vlan:vlans/
 
   after:
-    - name: "Default"
-      state: "active"
+    - name: Default
+      state: active
       vlan_id: 1
-    - name: "vlan_10"
-      state: "active"
+    - name: vlan_10
+      state: active
       vlan_id: 10
-    - name: "Test_VLAN20"
-      state: "active"
+    - name: Test_VLAN20
+      state: active
       vlan_id: 20
-    - name: "vlan_40"
-      state: "suspend"
+    - name: vlan_40
+      state: suspend
       vlan_id: 40
 
 overridden:
   requests:
-    - data: null
+    - data:
       method: DELETE
       path: /rest/restconf/data/openconfig-vlan:vlans/vlan=20
     - data: '{"openconfig-vlan:vlans": {"vlan": [{"config": {"status": "SUSPENDED", "vlan-id": 10, "name": "TEST_VLAN10", "tpid": "oc-vlan-types:TPID_0x8100"}}]}}'
@@ -66,23 +66,23 @@ overridden:
       path: /rest/restconf/data/openconfig-vlan:vlans/
 
   after:
-    - name: "Default"
-      state: "active"
+    - name: Default
+      state: active
       vlan_id: 1
-    - name: "TEST_VLAN10"
-      state: "suspend"
+    - name: TEST_VLAN10
+      state: suspend
       vlan_id: 10
 
 deleted:
   requests:
-    - data: null
+    - data:
       method: DELETE
       path: /rest/restconf/data/openconfig-vlan:vlans/vlan=10
-    - data: null
+    - data:
       method: DELETE
       path: /rest/restconf/data/openconfig-vlan:vlans/vlan=20
 
   after:
-    - name: "Default"
-      state: "active"
+    - name: Default
+      state: active
       vlan_id: 1

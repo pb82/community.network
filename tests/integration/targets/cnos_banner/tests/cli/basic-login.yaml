@@ -1,5 +1,4 @@
 ---
-
 - name: setup - remove login
   cnos_banner:
     banner: login
@@ -23,7 +22,7 @@
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
 
 - name: Set login again (idempotent)
   cnos_banner:
@@ -39,5 +38,5 @@
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.commands | length == 0"
+      - result.changed == false
+      - result.commands | length == 0

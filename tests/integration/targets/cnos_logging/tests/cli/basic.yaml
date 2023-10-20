@@ -29,7 +29,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"logging server 10.241.107.224" in result.commands'
 
 - name: Set up server logging again (idempotent)
@@ -39,9 +39,9 @@
     state: present
   register: result
 
-- assert: &unchanged
+- assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
 
 - name: Delete/disable server logging
   cnos_logging: *remove_server
@@ -49,7 +49,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"no logging server 10.241.107.224" in result.commands'
 
 - name: Delete/disable server logging (idempotent)
@@ -58,18 +58,18 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
 
 - name: Console logging with level errors
   cnos_logging:
     dest: console
-    level: 3 
+    level: 3
     state: present
   register: result
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"logging console 3" in result.commands'
 
 - name: Configure Buffer size
@@ -82,9 +82,8 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"logging logfile testfile 6 size 8000" in result.commands'
-
 
 - name: Change logging parameters using aggregate
   cnos_logging:
@@ -95,7 +94,7 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"logging logfile anil 3 size 9000" in result.commands'
       - '"logging console 5" in result.commands'
 
@@ -110,16 +109,16 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"logging logfile mylog 1 size 4096" in result.commands'
 
 - name: Set both logging destination and facility (idempotent)
   cnos_logging: *set_both
   register: result
 
-- assert: 
+- assert:
     that:
-      - 'result.changed == false'
+      - result.changed == false
 
 - name: remove logging as collection tearDown
   cnos_logging:
@@ -131,6 +130,6 @@
 
 - assert:
     that:
-      - 'result.changed == true'
+      - result.changed == true
       - '"no logging console" in result.commands'
       - '"no logging logfile" in result.commands'

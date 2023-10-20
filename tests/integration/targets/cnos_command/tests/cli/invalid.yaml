@@ -3,13 +3,13 @@
 
 - name: run invalid command
   cnos_command:
-    commands: ['display foo']
+    commands: [display foo]
   register: result
-  ignore_errors: yes
+  ignore_errors: true
 
 - assert:
     that:
-      - "result.failed"
+      - result.failed
 
 - name: run commands that include invalid command
   cnos_command:
@@ -17,11 +17,11 @@
       - display version
       - display foo
   register: result
-  ignore_errors: yes
+  ignore_errors: true
 
 - assert:
     that:
-      - "result.failed"
+      - result.failed
   ignore_errors: true
 
 - debug: msg="END cli/invalid.yaml"

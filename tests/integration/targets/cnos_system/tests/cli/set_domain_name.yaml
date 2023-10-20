@@ -13,7 +13,7 @@
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
 
 - name: verify domain_name
   cnos_system:
@@ -22,7 +22,7 @@
 
 - assert:
     that:
-      - "result.changed == true"
+      - result.changed == true
 
 - name: teardown
   cnos_config:

@@ -10,45 +10,45 @@
 
 - assert:
     that:
-      - "result.failed == false"
+      - result.failed == false
 
 - name: Check intent arguments (failed condition)
   cnos_interface:
     name: "{{ test_interface }}"
     state: up
     provider: "{{ cli }}"
-  ignore_errors: yes
+  ignore_errors: true
   register: result
 
 - assert:
     that:
-      - "result.failed == true"
+      - result.failed == true
       - "'state eq(up)' in result.failed_conditions"
 
 - name: Config + intent
   cnos_interface:
     name: "{{ test_interface }}"
-    enabled: False
+    enabled: false
     state: down
     provider: "{{ cli }}"
   register: result
 
 - assert:
     that:
-      - "result.failed == false"
+      - result.failed == false
 
 - name: Config + intent (fail)
   cnos_interface:
     name: "{{ test_interface }}"
-    enabled: False
+    enabled: false
     provider: "{{ cli }}"
     state: up
-  ignore_errors: yes
+  ignore_errors: true
   register: result
 
 - assert:
     that:
-      - "result.failed == true"
+      - result.failed == true
       - "'state eq(up)' in result.failed_conditions"
 
 - name: Register show neighbors detail
@@ -70,7 +70,7 @@
 
     - assert:
         that:
-          - "result.failed == false"
+          - result.failed == false
 
     - name: Check neighbors intent arguments (failed condition)
       cnos_interface:
@@ -79,12 +79,12 @@
           - port: dummy_port
             host: dummy_host
         provider: "{{ cli }}"
-      ignore_errors: yes
+      ignore_errors: true
       register: result
 
     - assert:
         that:
-          - "result.failed == true"
+          - result.failed == true
           - "'host dummy_host' in result.failed_conditions"
           - "'port dummy_port' in result.failed_conditions"
   when: '"netdev" in show_lldp_neighbors_result.stdout[0]'
@@ -93,15 +93,15 @@
   cnos_interface:
     aggregate:
       - name: "{{ test_interface }}"
-        enabled: True
+        enabled: true
         state: down
     provider: "{{ cli }}"
-  ignore_errors: yes
+  ignore_errors: true
   register: result
 
 - assert:
     that:
-      - "result.failed == false"
+      - result.failed == false
 
 - block:
     - name: Aggregate neighbors intent (pass)
@@ -112,12 +112,12 @@
               - port: Ethernet1/19
                 host: NE1032
         provider: "{{ cli }}"
-      ignore_errors: yes
+      ignore_errors: true
       register: result
 
     - assert:
         that:
-          - "result.failed == false"
+          - result.failed == false
 
     - name: Aggregate neighbors intent (fail)
       cnos_interface:
@@ -129,12 +129,12 @@
           - port: dummy_port
             host: dummy_host
         provider: "{{ cli }}"
-      ignore_errors: yes
+      ignore_errors: true
       register: result
 
     - assert:
         that:
-          - "result.failed == true"
+          - result.failed == true
           - "'host dummy_host' in result.failed_conditions"
           - "'port dummy_port' in result.failed_conditions"
   when: "'netdev' in show_lldp_neighbors_result.stdout[0]"

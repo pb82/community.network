@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START ce_is_is_view presented integration tests on connection={{ ansible_connection }}"
+    msg: START ce_is_is_view presented integration tests on connection={{ ansible_connection }}
 - include_tasks: setup.yaml
 
 - name: present the provided configuration with the exisiting running configuration
@@ -20,30 +20,15 @@
 - name: Assert the configuration is reflected on host
   assert:
     that:
-      - "result['changed'] == true"
+      - result['changed'] == true
 
 - name: Get basic config by ce_netconf.
   ce_netconf: &get_config
     rpc: get
-    cfg_xml: "<filter type=\"subtree\">
-               <isiscomm xmlns=\"http://www.huawei.com/netconf/vrp\" content-version=\"1.0\" format-version=\"1.0\">
-                  <isSites>
-                   <isSite>
-                    <instanceId>100</instanceId>
-                    <description></description>
-                    <isLevel></isLevel>
-                    <costStyle></costStyle>
-                    <relaxSpfLimit></relaxSpfLimit>
-                    <stdLevel1Cost></stdLevel1Cost>
-                    <stdLevel2Cost></stdLevel2Cost>
-                    <stdbandwidth></stdbandwidth>
-                    <stdAutoCostEnable></stdAutoCostEnable>
-                   <stdAutoCostEnableCompatible></stdAutoCostEnableCompatible>
-                 </isSite>
-              </isiscomm>
-            </filter>"
+    cfg_xml: <filter type="subtree"> <isiscomm xmlns="http://www.huawei.com/netconf/vrp" content-version="1.0" format-version="1.0"> <isSites> <isSite> <instanceId>100</instanceId>
+      <description></description> <isLevel></isLevel> <costStyle></costStyle> <relaxSpfLimit></relaxSpfLimit> <stdLevel1Cost></stdLevel1Cost> <stdLevel2Cost></stdLevel2Cost>
+      <stdbandwidth></stdbandwidth> <stdAutoCostEnable></stdAutoCostEnable> <stdAutoCostEnableCompatible></stdAutoCostEnableCompatible> </isSite> </isiscomm> </filter>
   register: result_xml
-
 
 - name: present the provided configuration with the existing running configuration (IDEMPOTENT)
   ce_is_is_view: *present
@@ -52,7 +37,7 @@
 - name: Assert that the previous task was idempotent
   assert:
     that:
-      - "repeat.changed == false"
+      - repeat.changed == false
       - "'<instanceId>100</instanceId>' in result_xml.end_state.result"
       - "'<vpnName>_public_</vpnName>' in result_xml.end_state.result"
       - "'<description>ISIS</description>' in result_xml.end_state.result"
@@ -80,11 +65,10 @@
     state: absent
   register: result
 
-
 - name: Assert the configuration is reflected on host
   assert:
     that:
-      - "result['changed'] == true"
+      - result['changed'] == true
 
 - name: present the provided configuration with the existing running configuration (IDEMPOTENT)
   ce_is_is_view: *absent
@@ -97,7 +81,7 @@
 - name: Assert that the previous task was idempotent
   assert:
     that:
-      - "repeat.changed == false"
+      - repeat.changed == false
       - "'<instanceId>100</instanceId>' not in result_xml.end_state.result"
       - "'<vpnName>_public_</vpnName>' not in result_xml.end_state.result"
       - "'<description>ISIS</description>' not in result_xml.end_state.result"
@@ -112,4 +96,4 @@
 # after present, isis 100 should be deleted
 - include_tasks: cleanup.yaml
 - debug:
-    msg: "END ce_is_is_view presentd integration tests on connection={{ ansible_connection }}"
+    msg: END ce_is_is_view presentd integration tests on connection={{ ansible_connection }}

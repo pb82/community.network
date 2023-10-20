@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "Start ce_lldp deleted remove interface config ansible_connection={{ ansible_connection }}"
+    msg: Start ce_lldp deleted remove interface config ansible_connection={{ ansible_connection }}
 
 - name: change ansible_connection to network_cli
   set_fact:
@@ -17,4 +17,4 @@
     ansible_connection: netconf
 
 - debug:
-    msg: "End ce_lldp deleted remove interface config ansible_connection={{ ansible_connection }}"
+    msg: End ce_lldp deleted remove interface config ansible_connection={{ ansible_connection }}

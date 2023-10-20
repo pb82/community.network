@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: "START ce_multicast_global presented integration tests on connection={{ ansible_connection }}"
+    msg: START ce_multicast_global presented integration tests on connection={{ ansible_connection }}
 
 - name: present the provided configuration with the exisiting running configuration
   ce_multicast_global: &present
@@ -12,23 +12,14 @@
 - name: Assert the configuration is reflected on host
   assert:
     that:
-      - "result['changed'] == true"
+      - result['changed'] == true
 
 - name: Get basic config by ce_netconf.
   ce_netconf: &get_config
     rpc: get
-    cfg_xml: "<filter type=\"subtree\">
-              <mcastbase xmlns=\"http://www.huawei.com/netconf/vrp\" content-version=\"1.0\" format-version=\"1.0\">
-                <mcastAfsEnables>
-                  <mcastAfsEnable>
-                    <vrfName></vrfName>
-                    <addressFamily></addressFamily>
-                  </mcastAfsEnable>
-                </mcastAfsEnables>
-              </mcastbase>
-            </filter>"
+    cfg_xml: <filter type="subtree"> <mcastbase xmlns="http://www.huawei.com/netconf/vrp" content-version="1.0" format-version="1.0"> <mcastAfsEnables> <mcastAfsEnable>
+      <vrfName></vrfName> <addressFamily></addressFamily> </mcastAfsEnable> </mcastAfsEnables> </mcastbase> </filter>
   register: result_xml
-
 
 - name: present the provided configuration with the existing running configuration (IDEMPOTENT)
   ce_multicast_global: *present
@@ -37,7 +28,7 @@
 - name: Assert that the previous task was idempotent
   assert:
     that:
-      - "repeat.changed == false"
+      - repeat.changed == false
       - "'<vrfName>vpna</vrfName>' in result_xml.end_state.result"
       - "'<addressFamily>vpna</addressFamily>' in result_xml.end_state.result"
 
@@ -47,11 +38,10 @@
     vrf: vpna
   register: result
 
-
 - name: Assert the configuration is reflected on host
   assert:
     that:
-      - "result['changed'] == true"
+      - result['changed'] == true
 
 - name: present the provided configuration with the existing running configuration (IDEMPOTENT)
   ce_multicast_global: *absent
@@ -64,10 +54,10 @@
 - name: Assert that the previous task was idempotent
   assert:
     that:
-      - "repeat.changed == false"
+      - repeat.changed == false
       - "'<vrfName>vpna</vrfName>' not in result_xml.end_state.result"
       - "'<addressFamily>vpna</addressFamily>' not in result_xml.end_state.result"
 # after present, isis 100 should be deleted
 
 - debug:
-    msg: "END ce_multicast_global resentd integration tests on connection={{ ansible_connection }}"
+    msg: END ce_multicast_global resentd integration tests on connection={{ ansible_connection }}

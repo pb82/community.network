@@ -8,7 +8,7 @@
 
 - assert:
     that:
-      - "result.changed == false"
-      - "result.stdout is defined"
+      - result.changed == false
+      - result.stdout is defined
 
 - debug: msg="END common/single.yaml on connection={{ ansible_connection }}"

@@ -46,7 +46,7 @@
 - assert:
     that:
       - result.changed == true
-#      - result.commands|length == 1
+      #      - result.commands|length == 1
       - "'no ip name-server 10.241.107.3 vrf default' in result.commands"
 
 - name: default name server
@@ -68,6 +68,6 @@
 
 - name: teardown
   cnos_config: *reset
-  ignore_errors: yes
+  ignore_errors: true
 
 - debug: msg="END cli/set_name_servers.yaml"

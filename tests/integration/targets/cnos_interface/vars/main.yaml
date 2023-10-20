@@ -5,5 +5,5 @@ cli:
   username: admin
   password: admin
   timeout: 30
-  authorize: True
+  authorize: true
   auth_pass:

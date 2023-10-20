@@ -1,7 +1,7 @@
 ---
 - name: Merge the provided configuration with the exisiting running configuration
   ce_static_route_bfd:
-    function_flag: 'singleBFD'
+    function_flag: singleBFD
     nhp_interface: 10GE1/0/1
     next_hop: 3.3.3.3
     min_tx_interval: 50
@@ -14,10 +14,10 @@
 - name: Assert the configuration is reflected on host
   assert:
     that:
-      - "result['changed'] == true"
+      - result['changed'] == true
 - name: ip route-static bfd 10GE1/0/1 3.3.3.4
-  ce_static_route_bfd: &merge
-    function_flag: 'globalBFD'
+  ce_static_route_bfd:
+    function_flag: globalBFD
     min_tx_interval: 50
     min_rx_interval: 50
     detect_multiplier: 6
@@ -28,4 +28,4 @@
 - name: Assert the configuration is reflected on host
   assert:
     that:
-      - "result['changed'] == true"
+      - result['changed'] == true
